@@ -3,15 +3,12 @@ package com.sssta.qinbot.core;
 import static com.sssta.qinbot.util.HttpHelper.*;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import atg.taglib.json.util.JSONException;
-import atg.taglib.json.util.JSONObject;
-
 import com.sssta.qinbot.model.Message;
 import com.sssta.qinbot.util.HttpHelper;
+import com.sssta.qinbot.util.ResponseParser;
 
 public class Poller extends Thread {
 	private boolean pause = false;
@@ -57,25 +54,9 @@ public class Poller extends Thread {
 		properties.put(PROPERTY_HOST, "d.web2.qq.com");
 		properties.put(PROPERTY_ORIGIN, "http://d.web2.qq.com");
 		
-		String resultJson = HttpHelper.sendPost(URL_POLL,Bot.getInstance().getPollReqData(),properties);
-		System.out.println("poll--"+resultJson);
-		try {
-			JSONObject base = new JSONObject(resultJson);
-			int retcode = base.optInt("retcode");
-			if ( retcode == 0 ||  retcode == 102) {
-				//TODO
-            }else if (retcode == 100) {
-            	//TODO
-            }else if (retcode == 120){
-            	//TODO
-            }else if (retcode == 121){
-            	//TODO
-            }else if (retcode == 116){
-            	bot.setPtwebqq(base.optString("p"));
-            }
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		String resultString = HttpHelper.sendPost(URL_POLL,Bot.getInstance().getPollReqData(),properties);
+		System.out.println("poll--"+resultString);
+		ResponseParser.parseMessages(resultString);
 	}
 
 	public boolean isPause() {

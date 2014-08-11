@@ -7,26 +7,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Random;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
-import sun.net.httpserver.DefaultHttpServerProvider;
-import sun.net.www.http.HttpClient;
-import atg.taglib.json.util.Cookie;
-
 import com.sssta.qinbot.core.Bot;
-import com.sssta.qinbot.core.Poller;
 import com.sssta.qinbot.event.EventCallback;
 import com.sssta.qinbot.model.BotCookie;
-import com.sssta.qinbot.model.VerifyCodeChecker;
-import com.sun.jndi.url.ldaps.ldapsURLContextFactory;
 
 
 
@@ -236,7 +227,6 @@ public class HttpHelper {
 	        		try {
 						is.close();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}finally{
 						is  =null;

@@ -1,6 +1,5 @@
 package com.sssta.qinbot.model;
 
-import atg.taglib.json.util.JSONException;
 import atg.taglib.json.util.JSONObject;
 
 public class Group {

@@ -10,10 +10,7 @@ import static com.sssta.qinbot.util.HttpHelper.PROPERTY_ORIGIN;
 import static com.sssta.qinbot.util.HttpHelper.PROPERTY_REFER;
 import static com.sssta.qinbot.util.HttpHelper.URL_REFER_POLL;
 
-import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.sssta.qinbot.model.Group;

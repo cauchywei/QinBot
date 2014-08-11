@@ -3,10 +3,11 @@ package com.sssta.qinbot.util;
 import static com.sssta.qinbot.util.HttpHelper.PROPERTY_ACCEPT;
 import static com.sssta.qinbot.util.HttpHelper.PROPERTY_ACCEPT_CHARSET;
 import static com.sssta.qinbot.util.HttpHelper.PROPERTY_CONNECTION;
-import static com.sssta.qinbot.util.HttpHelper.getCookie;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,10 +20,9 @@ import com.sssta.qinbot.model.Friend;
 import com.sssta.qinbot.model.Group;
 import com.sssta.qinbot.model.Message;
 import com.sssta.qinbot.model.VerifyCodeChecker;
-import com.sun.tools.javac.util.List;
 
 public class ResponseParser {
-	//解析验证码字符串
+
 	public static VerifyCodeChecker parseVC(String respones) throws ParseException{
 		System.out.println();
 		System.out.println(respones);
@@ -58,9 +58,31 @@ public class ResponseParser {
     
 	}
 	
-	public List<Message> parseMessages(String resultString){
+	public static List<Message> parseMessages(String resultString){
+		List<Message> messages = new ArrayList<Message>();
+		JSONObject base;
+		try {
+			base = new JSONObject(resultString);
+			int retcode = base.optInt("retcode",-1);
+			if (retcode == 0) {
+				JSONArray messageArray = base.optJSONArray("result");
+				for (int i = 0; i < messageArray.length(); i++) {
+					messages.add(Message.newEntity(messageArray.optJSONObject(i)));
+				}
+			}else if (retcode == 100) {
+            	//TODO
+            }else if (retcode == 120){
+            	//TODO
+            }else if (retcode == 121){
+            	//TODO
+            }else if (retcode == 116){
+            	Bot.getInstance().setPtwebqq(base.optString("p"));
+            }
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		
-		return null;
+		return messages;
 	}
 	
 	public static HashMap<String,Friend> parseFriends(String resultString){

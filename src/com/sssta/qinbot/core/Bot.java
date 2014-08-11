@@ -5,27 +5,17 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
-
 import javax.swing.JOptionPane;
 
-import atg.taglib.json.JsonObjectTag;
-import atg.taglib.json.util.JSONArray;
 import atg.taglib.json.util.JSONException;
 import atg.taglib.json.util.JSONObject;
 
-import com.apple.crypto.provider.CryptoGlobals;
 import com.sssta.qinbot.event.EventCallback;
 import com.sssta.qinbot.model.BotCookie;
 import com.sssta.qinbot.model.BotState;
 import com.sssta.qinbot.model.DiscussGroup;
 import com.sssta.qinbot.model.Friend;
 import com.sssta.qinbot.model.Group;
-import com.sssta.qinbot.model.Message;
 import com.sssta.qinbot.model.VerifyCodeChecker;
 import com.sssta.qinbot.util.Cyrpt;
 import com.sssta.qinbot.util.HttpHelper;

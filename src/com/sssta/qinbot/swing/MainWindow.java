@@ -4,21 +4,19 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import com.sssta.qinbot.core.Bot;
-import com.sssta.qinbot.util.HttpHelper;
 
 
 
 public class MainWindow extends JFrame  {
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4377883465250021577L;
 	public static final int GAME_WIDTH = 700;
 	public static final int GAME_HEIGHT = 600;
 	public static  int SCREEN_WIDTH ;

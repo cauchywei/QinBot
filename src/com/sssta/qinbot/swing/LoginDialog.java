@@ -30,7 +30,7 @@ public class LoginDialog extends JDialog {
 	private JLabel qqLabel,pswLabel,vcLabel,imgLabel;
 	private JTextField qqTextField,vcTextField;
 	private JPasswordField pswField;
-	private JButton submit,refresh;
+	private JButton submit;
 	
 	private static final int WIDTH =280;
 	private static final int HEIGHT = 210;

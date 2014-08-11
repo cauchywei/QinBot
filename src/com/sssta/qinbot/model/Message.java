@@ -3,10 +3,7 @@ package com.sssta.qinbot.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.sssta.qinbot.core.Sender;
 import com.sssta.qinbot.exception.MessageErrorException;
-import com.sun.corba.se.impl.protocol.giopmsgheaders.ReplyMessage;
-
 import atg.taglib.json.util.JSONArray;
 import atg.taglib.json.util.JSONException;
 import atg.taglib.json.util.JSONObject;
@@ -37,12 +34,19 @@ public abstract class Message {
 	public int msgType;
 	public String replyIp;
 		
-	public Message(String reply){
+	public Message(){
 		
 	}
 	
 	public Message(JSONObject message){
-		content = message.optJSONArray(CONTENT).optString(1);
+		JSONArray contents = message.optJSONArray(CONTENT);
+		for (int i = 0; i < contents.length(); i++) {
+			if (contents.get(i) instanceof String) {
+				content =(String)contents.get(i);
+			}else{
+				//TODO 表情以及图片的解析
+			}
+		}
 		time = message.optLong(TIME);
 		from = message.optString(FROM);
 		to = message.optString(TO);
@@ -50,6 +54,18 @@ public abstract class Message {
 		msgId2 = message.optString(MSG_ID2);
 		msgType = message.optInt(MSG_TYPE);
 		replyIp = message.optString(REPLY_IP);
+	}
+	
+	public static Message newEntity(JSONObject message){
+		String type = message.optString(POLL_TYPE);
+		if (type.equals(TYPE_NORMAL)) {
+			return new NormalMessage(message);
+		}else if (type.equals(TYPE_GROUP)) {
+			return new GroupMessage(message);
+		}else {
+			return new NormalMessage();
+		}
+		
 	}
 
 	

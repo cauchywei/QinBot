@@ -4,6 +4,9 @@ import atg.taglib.json.util.JSONObject;
 
 public class NormalMessage extends Message {
 
+	public NormalMessage(){
+		
+	}
 	public NormalMessage(JSONObject message) {
 		super(message);
 		// TODO Auto-generated constructor stub
