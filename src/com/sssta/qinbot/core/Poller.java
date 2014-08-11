@@ -38,7 +38,7 @@ public class Poller extends Thread {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} catch (Exception e) {
-					//
+					e.printStackTrace();
 				}
 			}
 		}
@@ -57,7 +57,7 @@ public class Poller extends Thread {
 		properties.put(PROPERTY_HOST, "d.web2.qq.com");
 		properties.put(PROPERTY_ORIGIN, "http://d.web2.qq.com");
 		
-		String resultJson = HttpHelper.sendPost(URL_POLL,bot.getPollReqData(),properties);
+		String resultJson = HttpHelper.sendPost(URL_POLL,Bot.getInstance().getPollReqData(),properties);
 		System.out.println("poll--"+resultJson);
 		try {
 			JSONObject base = new JSONObject(resultJson);

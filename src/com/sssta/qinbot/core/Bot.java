@@ -251,7 +251,6 @@ public class Bot {
 			String content = String.format(URL_FORMAT_GET_FRIEND_QQ, key,verifySession,vfwebqq,System.currentTimeMillis());
 			String resultString = sendGet(content, properties);
 			System.out.println(resultString);
-
 			try {
 				JSONObject base = new JSONObject(resultString);
 				if (base.optInt("retcode",-1) == 0) {
@@ -289,39 +288,11 @@ public class Bot {
 
 		String resultString = sendPost(HttpHelper.URL_GET_FRIENDS,content,properties);
 		System.out.println("friend--"+resultString);
-		try {
-			JSONObject base = new JSONObject(resultString);
-			if (base.optInt("retcode",-1) == 0) {
-				JSONObject resultObject = base.optJSONObject("result");
-				JSONArray friendsArray = resultObject.optJSONArray("friends");
-				for (int i = 0; i < friendsArray.length(); i++) {
-					JSONObject friendObject = friendsArray.optJSONObject(i);
-					Friend friend = new Friend();
-					friend.setUin(friendObject.optString("uin"));
-					friend.setFriendFlag(friendObject.optInt("flag"));
-					friend.setCategories(friendObject.optInt("categories"));
-					friends.put(friend.getUin(), friend);
-				}
-				
-				JSONArray infoArray = resultObject.optJSONArray("info");
-				for (int i = 0; i < infoArray.length(); i++) {
-					JSONObject infoObject = infoArray.optJSONObject(i);
-					Friend friend = friends.get(infoObject.optString("uin"));
-					friend.setFace(infoObject.optInt("face"));
-					friend.setInfoFlag(infoObject.optInt("flag"));
-					friend.setNickName(infoObject.optString("nick"));
-				}
-				
-				JSONArray markNameArray = resultObject.optJSONArray("marknames");
-				for (int i = 0; i < markNameArray.length(); i++) {
-					JSONObject infoObject = markNameArray.optJSONObject(i);
-					Friend friend = friends.get(infoObject.optString("uin"));
-					friend.setMarkName(infoObject.optString("markname"));
-					friend.setMarkNameType(infoObject.optInt("type"));
-				}
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
+		
+		HashMap<String, Friend> newFriends = ResponseParser.parseFriends(resultString);
+		if (!newFriends.isEmpty()) {
+			friends.clear();
+			friends.putAll(newFriends);
 		}
 	}
 
@@ -342,17 +313,10 @@ public class Bot {
 		properties.put(PROPERTY_ORIGIN, "http://d.web2.qq.com");
 
 		String resultString = sendPost(URL_GET_INFO_GROUP,content,properties);
-		try {
-			JSONObject base = new JSONObject(resultString);
-			if (base.optInt("retcode",-1) == 0) {
-				JSONArray groupArray = base.optJSONObject("result").optJSONArray("gnamelist");
-				for (int i = 0; i < groupArray.length(); i++) {
-					Group group = new Group(groupArray.optJSONObject(i));
-					groups.put(group.getName(),group);
-				}
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
+		HashMap<String, Group> newGroups = ResponseParser.parseGroups(resultString);
+		if (!newGroups.isEmpty()) {
+			groups.clear();
+			groups.putAll(newGroups);
 		}
 		
 	}
