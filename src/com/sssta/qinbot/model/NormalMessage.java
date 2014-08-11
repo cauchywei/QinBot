@@ -24,5 +24,11 @@ public class NormalMessage extends Message {
 		return "";
 	}
 
+	@Override
+	public void send() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

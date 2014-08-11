@@ -3,7 +3,9 @@ package com.sssta.qinbot.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.sssta.qinbot.core.Sender;
 import com.sssta.qinbot.exception.MessageErrorException;
+import com.sun.corba.se.impl.protocol.giopmsgheaders.ReplyMessage;
 
 import atg.taglib.json.util.JSONArray;
 import atg.taglib.json.util.JSONException;
@@ -24,6 +26,7 @@ public abstract class Message {
 	private static final String MSG_ID2 = "msg_id2";
 	private static final String MSG_TYPE = "msg_type";
 	private static final String REPLY_IP = "reply_ip";
+	private String replyMsg;
 	
 	public String content;
 	public long time;
@@ -33,7 +36,7 @@ public abstract class Message {
 	public String msgId2;
 	public int msgType;
 	public String replyIp;
-	
+		
 	public Message(String reply){
 		
 	}
@@ -75,6 +78,7 @@ public abstract class Message {
 	public abstract String getType();
 	public abstract void reply(String msg);
 	public abstract String generateReplyJson();
+	public abstract void send();
 
 	public String getContent() {
 		return content;
@@ -153,6 +157,14 @@ public abstract class Message {
 
 	public void setReplyIp(String replyIp) {
 		this.replyIp = replyIp;
+	}
+
+	public String getReplyMsg() {
+		return replyMsg;
+	}
+
+	public void setReplyMsg(String replyMsg) {
+		this.replyMsg = replyMsg;
 	}
 
 	

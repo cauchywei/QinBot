@@ -38,5 +38,11 @@ public class GroupMessage extends Message {
 		return null;
 	}
 
+	@Override
+	public void send() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

@@ -5,18 +5,22 @@ import static com.sssta.qinbot.util.HttpHelper.*;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import atg.taglib.json.util.JSONException;
 import atg.taglib.json.util.JSONObject;
 
+import com.sssta.qinbot.model.Message;
 import com.sssta.qinbot.util.HttpHelper;
 
 public class Poller extends Thread {
 	private boolean pause = false;
 	private Bot bot;
-	public Poller(Bot bot) {
-		super();
-		this.bot = bot;
+	private MessageExecutor messageExecutor;
+	private LinkedBlockingQueue<Message> messageQueue;
+	public Poller(MessageExecutor messageExecutor) {
+		this.messageExecutor = messageExecutor;
+		this.messageQueue = messageExecutor.getSendMessageQueue();
 	}
 
 	@Override
@@ -73,4 +77,13 @@ public class Poller extends Thread {
 			e.printStackTrace();
 		}
 	}
+
+	public boolean isPause() {
+		return pause;
+	}
+
+	public void setPause(boolean pause) {
+		this.pause = pause;
+	}
+	
 }

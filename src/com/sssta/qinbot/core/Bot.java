@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.swing.JOptionPane;
 
@@ -21,6 +25,7 @@ import com.sssta.qinbot.model.BotState;
 import com.sssta.qinbot.model.DiscussGroup;
 import com.sssta.qinbot.model.Friend;
 import com.sssta.qinbot.model.Group;
+import com.sssta.qinbot.model.Message;
 import com.sssta.qinbot.model.VerifyCodeChecker;
 import com.sssta.qinbot.util.Cyrpt;
 import com.sssta.qinbot.util.HttpHelper;
@@ -48,14 +53,17 @@ public class Bot {
 	private String skey;
 	private String psessionid;
 	
-	private Poller poller = new Poller(this);
-	private Sender sender = new Sender(this);
-	private int messageID = 24220008;
+	private MessageExecutor messageManager = new MessageExecutor(this);
 	
 	private HashMap<String,Group> groups = new HashMap<String,Group>();
 	private HashMap<String,Friend> friends = new HashMap<String,Friend>();
 	private HashMap<String,DiscussGroup> discussGroups = new HashMap<String,DiscussGroup>();
 	
+	private Bot(){
+		
+	}
+	
+
 	public static Bot getInstance() {
 		return bot;
 	}
@@ -210,8 +218,7 @@ public class Bot {
 			initInfo();
 			
 			//开始轮询
-			poller.start();
-			sender.start();
+			messageManager.start();
 			return true;
 		} else {
 			JOptionPane.showMessageDialog(null, state, "警告",
@@ -415,7 +422,7 @@ public class Bot {
 	}
 	
 	public  String getSendGrouopReqData(String group_uin){
-		String content = String.format("{\"group_uin\":%s,\"content\":\"[\\\"测试\\\",[\\\"font\\\",{\\\"name\\\":\\\"宋体\\\",\\\"size\\\":\\\"10\\\",\\\"style\\\":[0,0,0],\\\"color\\\":\\\"000000\\\"}]]\",\"msg_id\":%d,\"clientid\":\"%s\",\"psessionid\":\"%s\"}",group_uin,messageID++,CLIENT_ID,psessionid);
+		String content = String.format("{\"group_uin\":%s,\"content\":\"[\\\"测试\\\",[\\\"font\\\",{\\\"name\\\":\\\"宋体\\\",\\\"size\\\":\\\"10\\\",\\\"style\\\":[0,0,0],\\\"color\\\":\\\"000000\\\"}]]\",\"msg_id\":%d,\"clientid\":\"%s\",\"psessionid\":\"%s\"}",group_uin,10000,CLIENT_ID,psessionid);
 		content = "r="+URLEncoder.encode(content)+"&clientid="+CLIENT_ID+"%psessionid="+psessionid;
 		return content;
 	}
