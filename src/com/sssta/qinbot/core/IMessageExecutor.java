@@ -2,6 +2,7 @@ package com.sssta.qinbot.core;
 
 import java.util.List;
 
+import com.sssta.qinbot.core.filter.IMessageFilter;
 import com.sssta.qinbot.model.Message;
 
 

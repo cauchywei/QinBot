@@ -1,20 +1,23 @@
 package com.sssta.qinbot.core;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.sssta.qinbot.core.filter.IMessageFilter;
 import com.sssta.qinbot.model.Message;
 
 public class MessageExecutor implements IMessageExecutor {
+	private LinkedList<IMessageFilter> filters = new LinkedList<IMessageFilter>();
 	private Poller poller;
 	private Sender sender;
 	private Bot bot;
 	ExecutorService executor = Executors.newCachedThreadPool();
 	private LinkedBlockingQueue<Message> sendMessageQueue = new LinkedBlockingQueue<Message>();
-	private int messageID = 24220008;
+	private int messageID = 23333;
 
 	public MessageExecutor(Bot bot) {
 		this.bot = bot;
@@ -80,7 +83,10 @@ public class MessageExecutor implements IMessageExecutor {
 
 	@Override
 	public void exec(List<Message> messages) {
-		// TODO Auto-generated method stub
+		for (IMessageFilter filter :filters) {
+				filter.filte(messages);
+		}
+		
 		
 	}
 
