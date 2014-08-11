@@ -56,7 +56,7 @@ public class Poller extends Thread {
 		
 		String resultString = HttpHelper.sendPost(URL_POLL,Bot.getInstance().getPollReqData(),properties);
 		System.out.println("poll--"+resultString);
-		ResponseParser.parseMessages(resultString);
+		messageExecutor.exec(ResponseParser.parseMessages(resultString));
 	}
 
 	public boolean isPause() {
