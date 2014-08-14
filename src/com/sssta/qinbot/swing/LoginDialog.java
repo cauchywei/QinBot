@@ -41,6 +41,48 @@ public class LoginDialog extends JDialog {
 	private String loginSig;
 	private boolean isChecked = false;
 	
+	private FocusListener focusListener = new FocusListener() {
+		
+		@Override
+		public void focusLost(FocusEvent e) {
+					checkLogin();
+		}
+		@Override
+		public void focusGained(FocusEvent e) {
+		}
+	};
+	
+	private MouseListener refreshImgMouseListener = new MouseListener() {
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+		}
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+		}
+		
+		@Override
+		public void mouseExited(MouseEvent e) {
+		}
+		
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		}
+		
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			checkLogin();
+		}
+	};
+	
+	private ActionListener submitActionListener = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			login();
+		}
+	};
+	
 
 	public LoginDialog(MainWindow mainWindow) {
 		super(mainWindow);
@@ -51,7 +93,7 @@ public class LoginDialog extends JDialog {
 		setResizable(false);
 		
 		initCompoments();
-		setListener();
+		addListeners();
 		setVisible(true);
 		
 		SwingUtilities.invokeLater(new Runnable() {
@@ -122,54 +164,16 @@ public class LoginDialog extends JDialog {
 
 	}
 
-	private void setListener() {
-		qqTextField.addFocusListener(new FocusListener() {
-			
-			@Override
-			public void focusLost(FocusEvent e) {
-						checkLogin();
-			}
-			@Override
-			public void focusGained(FocusEvent e) {
-			}
-		});
-		
-		imgLabel.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				checkLogin();
-			}
-		});
-		
-		
-		submit.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				login();
-				
-			}
-
-		});
-		
+	private void addListeners() {
+		qqTextField.addFocusListener(focusListener);
+		imgLabel.addMouseListener(refreshImgMouseListener);
+		submit.addActionListener(submitActionListener);
+	}
+	
+	private void removeListeners() {
+		qqTextField.removeFocusListener(focusListener);
+		imgLabel.removeMouseListener(refreshImgMouseListener);
+		submit.removeActionListener(submitActionListener);
 	}
 
 	private void login() {
@@ -194,23 +198,39 @@ public class LoginDialog extends JDialog {
 		
 		Bot.getInstance().setQq(qqTextField.getText());
 		Bot.getInstance().setPsw(pswField.getText().trim());
+		qqTextField.setEditable(false);
+		pswField.setEditable(false);
+		vcTextField.setEditable(false);
+		removeListeners();
 		
-		boolean result;
-		if (vcTextField.isVisible()) {
-			result = Bot.getInstance().login(vcTextField.getText().trim());
-		}else{
-			result =Bot.getInstance().login("");
-		}
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				boolean result;
+				if (vcTextField.isVisible()) {
+					result = Bot.getInstance().login(vcTextField.getText().trim());
+				}else{
+					result =Bot.getInstance().login("");
+				}
+				
+				if(!result){
+					//登陆失败，重新检测登陆状态和获取新验证码
+					qqTextField.setEditable(true);
+					pswField.setEditable(true);
+					vcTextField.setEditable(true);
+					vcTextField.setText("");
+					addListeners();
+					checkLogin();
+				}else {
+					//登陆成功，显示主窗口；
+					dispose();
+					mainWindow.setVisible(true);
+					mainWindow.loadData();
+				}
+				
+			}
+		}).start();
 		
-		if(!result){
-			//登陆失败，重新检测登陆状态和获取新验证码
-			checkLogin();
-		}else {
-			//登陆成功，显示主窗口；
-			dispose();
-			mainWindow.setVisible(true);
-			mainWindow.loadData();
-		}
 				
 	}
 	private void initCompoments() {
