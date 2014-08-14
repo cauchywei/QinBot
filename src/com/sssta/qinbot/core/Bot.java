@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
+
 import javax.swing.JOptionPane;
 
 import atg.taglib.json.util.JSONException;
@@ -187,7 +189,7 @@ public class Bot {
 			propertiesPost.put(PROPERTY_CONTETN_TYPE, "application/x-www-form-urlencoded");
 			
 			String res = sendPost(channelLoginUrl, content,propertiesPost);// post
-			System.out.println("\n  " + ptwebqq + "   " + res);
+			//System.out.println("\n  " + ptwebqq + "   " + res);
 			JSONObject rootObject = null;
 			try {
 				//抓取重要的两个值，用于发送信息
@@ -220,11 +222,14 @@ public class Bot {
 	
 	private void initInfo() {
 		updateGroups();
+		updateGroupsInfo();
 		updateFriends();
 		updateDiscussGroups();
 		
 		getFriendRealQQ();
 	}
+
+	
 
 	private void getFriendRealQQ() {
 		HashMap<String, String> properties = new HashMap<String, String>();
@@ -235,6 +240,8 @@ public class Bot {
 		properties.put(PROPERTY_HOST, "s.web2.qq.com");
 		properties.put(PROPERTY_ORIGIN, "http://s.web2.qq.com");
 		
+		
+		//获取QQ好友的Q号
 		Iterator<String> iterator = friends.keySet().iterator();
 		while (iterator.hasNext()) {
 			String key = iterator.next();
@@ -254,6 +261,40 @@ public class Bot {
 			}
 
 		}
+		
+		//获取所有群组成员的Q号
+		iterator = groups.keySet().iterator();
+		while (iterator.hasNext()) {
+			String groupUni = iterator.next();
+			
+			HashMap<String, Friend> members = groups.get(groupUni).getMembers();
+			
+			Iterator<String> memberIterator = members.keySet().iterator();
+			while (memberIterator.hasNext()) {
+				String key = memberIterator.next();
+				//已经在好友列表的群组成员，不做重复请求
+				if (friends.containsKey(key)) {
+					members.get(key).setQQ(friends.get(key).getQQ());
+				}else{
+					String content = String.format(URL_FORMAT_GET_FRIEND_QQ, key,verifySession,vfwebqq,System.currentTimeMillis());
+					String resultString = sendGet(content, properties);
+					System.out.println("GroupMemberQQ--"+resultString);
+					try {
+						JSONObject base = new JSONObject(resultString);
+						if (base.optInt("retcode",-1) == 0) {
+							JSONObject result = base.optJSONObject("result");
+							Friend member = members.get(key);
+							member.setQQ(result.optString("account",member.getUin()));
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			
+			}
+		}
+		
+	
 		
 	}
 
@@ -310,6 +351,28 @@ public class Bot {
 		}
 		
 	}
+	
+	private void updateGroupsInfo() {
+		Set<String> unisSet = getGroups().keySet();
+		Iterator<String> iterator = unisSet.iterator();
+				HashMap<String, String> properties = new HashMap<String, String>();
+		properties.put(PROPERTY_ACCEPT, "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+		properties.put(PROPERTY_REFER, URL_REFER_GET_GROUP_INFO);
+		properties.put(PROPERTY_ACCEPT,"*/*");
+		properties.put(PROPERTY_ACCEPT_ENCODING, "gzip,deflate,sdch");
+		properties.put(PROPERTY_CONNECTION,"keep-alive");
+		properties.put(PROPERTY_ACCEPT_LANGUAGE, "zh-CN,zh;q=0.8");
+		properties.put(PROPERTY_HOST, "s.web2.qq.com");
+		
+		while (iterator.hasNext()) {
+			String uni = iterator.next();
+			String url = String.format(URL_FORMAT_GET_GROUP_INFO, groups.get(uni).getCode(),vfwebqq,System.currentTimeMillis());
+			String resultString = HttpHelper.sendGet(url,properties);
+			System.out.println("groupInfo--"+resultString);
+			ResponseParser.parseGroupInfo(groups.get(uni), resultString);
+		}
+	}
+
 
 	public static void checkLogin(EventCallback event){
 		
@@ -375,11 +438,6 @@ public class Bot {
 		return pollReqCache;
 	}
 	
-	public  String getSendGrouopReqData(String group_uin){
-		String content = String.format("{\"group_uin\":%s,\"content\":\"[\\\"测试\\\",[\\\"font\\\",{\\\"name\\\":\\\"宋体\\\",\\\"size\\\":\\\"10\\\",\\\"style\\\":[0,0,0],\\\"color\\\":\\\"000000\\\"}]]\",\"msg_id\":%d,\"clientid\":\"%s\",\"psessionid\":\"%s\"}",group_uin,10000,CLIENT_ID,psessionid);
-		content = "r="+URLEncoder.encode(content)+"&clientid="+CLIENT_ID+"%psessionid="+psessionid;
-		return content;
-	}
 	
 
 	public HashMap<String,Group> getGroups() {

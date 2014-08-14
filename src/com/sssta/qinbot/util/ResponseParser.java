@@ -141,5 +141,43 @@ public class ResponseParser {
 		return groups;
 	}
 	
+	public static void parseGroupInfo(Group group,String resultString){
+		HashMap<String,Friend> members = group.getMembers();
+		try {
+			JSONObject base = new JSONObject(resultString);
+			if (base.optInt("retcode",-1) == 0) {
+				
+				JSONObject resultObject = base.optJSONObject("result");
+				
+				JSONArray cardArray = resultObject.optJSONArray("cards");
+				
+				
+				JSONArray infoArray = resultObject.optJSONArray("minfo");
+				for (int i = 0; i < infoArray.length(); i++) {
+					Friend member = new Friend();
+					JSONObject memberObject = infoArray.optJSONObject(i);
+					
+					member.setUin(memberObject.optString("uin"));
+					member.setNickName(memberObject.optString("nick"));
+					member.setGender(memberObject.optString("gender"));
+					
+					members.put(member.getUin(), member);
+
+				}
+				
+				for (int i = 0; i < cardArray.length(); i++) {
+					JSONObject memberObject = cardArray.optJSONObject(i);
+					Friend member = members.get(memberObject.optString("muin"));
+					member.setCard(memberObject.optString("card"));
+					members.put(member.getUin(), member);
+				}
+				
+				group.setOwner(resultObject.optJSONObject("ginfo").optString("owner"));
+				
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	
+	}
 }

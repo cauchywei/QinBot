@@ -14,4 +14,6 @@ public interface IMessageExecutor {
 	public void exec(List<Message> messages);
 	public void addFilter(IMessageFilter filter);
 	public IMessageFilter removeFilter(IMessageFilter filter);
+	public void loadPlugins();
+	public void loadFilters();
 }

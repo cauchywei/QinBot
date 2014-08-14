@@ -10,6 +10,9 @@ public class Friend {
 	private String markName;
 	private int face;
 	private int markNameType;
+	private String gender;
+	
+	private String card;
 	
 	public String getQQ() {
 		return qq;
@@ -64,6 +67,24 @@ public class Friend {
 	}
 	public void setMarkNameType(int markNameType) {
 		this.markNameType = markNameType;
+	}
+	public String getQq() {
+		return qq;
+	}
+	public void setQq(String qq) {
+		this.qq = qq;
+	}
+	public String getCard() {
+		return card;
+	}
+	public void setCard(String card) {
+		this.card = card;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	
 	

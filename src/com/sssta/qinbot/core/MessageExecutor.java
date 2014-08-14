@@ -7,8 +7,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.sssta.qinbot.core.filter.BlackNameListFilter;
+import com.sssta.qinbot.core.filter.EmptyContentFilter;
 import com.sssta.qinbot.core.filter.IMessageFilter;
 import com.sssta.qinbot.model.Message;
+import com.sun.org.apache.xalan.internal.xsltc.dom.EmptyFilter;
 
 public class MessageExecutor implements IMessageExecutor {
 	private LinkedList<IMessageFilter> filters = new LinkedList<IMessageFilter>();
@@ -80,9 +83,21 @@ public class MessageExecutor implements IMessageExecutor {
 	public void setSendMessageQueue(LinkedBlockingQueue<Message> sendMessageQueue) {
 		this.sendMessageQueue = sendMessageQueue;
 	}
+	
+	@Override
+	public void loadPlugins() {
+		
+	}
+	
+	@Override
+	public void loadFilters(){
+		filters.add(new EmptyContentFilter());
+		filters.add(new BlackNameListFilter());
+	}
 
 	@Override
 	public void exec(List<Message> messages) {
+		
 		for (IMessageFilter filter :filters) {
 				filter.filte(messages);
 		}
@@ -102,8 +117,5 @@ public class MessageExecutor implements IMessageExecutor {
 		return null;
 	}
 
-
-	
-	
 
 }

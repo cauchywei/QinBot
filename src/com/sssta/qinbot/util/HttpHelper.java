@@ -38,19 +38,34 @@ public class HttpHelper {
 	public static final String URL_GET_INFO_GROUP = "http://s.web2.qq.com/api/get_group_name_list_mask2";
 	public static final String URL_GET_FRIENDS = "http://s.web2.qq.com/api/get_user_friends2";
 	public static final String URL_SEND_GROUP = "http://d.web2.qq.com/channel/send_qun_msg2";
+	public static final String URL_SEND_BUDDY = "http://d.web2.qq.com/channel/send_buddy_msg2";
+
 
 	public static final String URL_REFER_LOGIN_1 ="http://d.web2.qq.com/proxy.html?v=20110331002&callback=1&id=2";
 	public static final String URL_REFER = "http://web2.qq.com/webqq.html";  
 	public static final String URL_REFER_Q = "https://ui.ptlogin2.qq.com/cgi-bin/login?daid=164&target=self&style=5&mibao_css=m_webqq&appid=1003903&enable_qlogin=0&no_verifyimg=1&s_url=http%3A%2F%2Fweb2.qq.com%2Floginproxy.html&f_url=loginerroralert&strong_login=1&login_state=10&t=20140612002";
 	public static final String URL_REFER_POLL = "http://d.web2.qq.com/proxy.html?v=20110331002&callback=1&id=2";
 	public static final String URL_REFER_GET_INFO = "http://s.web2.qq.com/proxy.html?v=20110412001&callback=1&id=3";
-	//uni QQ号   login_sig 通过getLoginSig获得    r 一个随机数
+	public static final String URL_REFER_GET_GROUP_INFO = "http://s.web2.qq.com/proxy.html?v=20110412001&callback=1&id=1";
+
+	/**
+	 *	uni QQ号   login_sig 通过getLoginSig获得    r 一个随机数
+	 * */
     public static final String URL_FORMAT_CHECK = "https://ssl.ptlogin2.qq.com/check?uin=%s&appid=1003903&js_ver=10087&js_type=0&login_sig=%s&u1=http%%3A%%2F%%2Fweb2.qq.com%%2Floginproxy.html&r=%f";
-      //u qq号 p 加密码  verifycode   login_sig    verifysession
+    /** 
+     *	u qq号 p 加密码  verifycode   login_sig    verifysession
+     */
     public static final String URL_FORMAT_LOGIN = "https://ssl.ptlogin2.qq.com/login?u=%s&p=%s&verifycode=%s&webqq_type=10&remember_uin=1&login2qq=1&aid=1003903&u1=http%%3A%%2F%%2Fweb2.qq.com%%2Floginproxy.html%%3Flogin2qq%%3D1%%26webqq_type%%3D10&h=1&ptredirect=0&ptlang=2052&daid=164&from_ui=1&pttype=1&dumy=&fp=loginerroralert&action=6-31-678356&mibao_css=m_webqq&t=1&g=1&js_type=0&js_ver=10088&login_sig=%s&pt_uistyle=5&pt_vcode_v1=0&pt_verifysession_v1=%s";
     
-    //uni 临时号  verifysession  就叫这个名字  vfwebqq 同上  t 时间
+    /**
+     * uni 临时号  verifysession  就叫这个名字  vfwebqq 同上  t 时间
+     */
     public static final String URL_FORMAT_GET_FRIEND_QQ = "http://s.web2.qq.com/api/get_friend_uin2?tuin=%s&verifysession=%s&type=1&code=&vfwebqq=%s&t=%d";
+    /**
+     * gcode 群号    vfwebqq 就叫这个名字  t 时间
+     */
+    public static final String URL_FORMAT_GET_GROUP_INFO = "http://s.web2.qq.com/api/get_group_info_ext2?gcode=%s&cb=undefined&vfwebqq=%s&t=%d";
+
     
     private static HashMap<String, BotCookie> cookieMap = new HashMap<String, BotCookie>();
 	private static StringBuilder cookieCache = new StringBuilder();

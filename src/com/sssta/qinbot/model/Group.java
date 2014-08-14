@@ -1,5 +1,8 @@
 package com.sssta.qinbot.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import atg.taglib.json.util.JSONObject;
 
 public class Group {
@@ -7,6 +10,8 @@ public class Group {
 	private String code;
 	private String flag;
 	private String name;
+	private HashMap<String,Friend> members = new HashMap<String, Friend>();
+	private String owner;
 
 	public Group(JSONObject group) {
 		flag = group.optString("flag");
@@ -47,6 +52,23 @@ public class Group {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	public HashMap<String, Friend> getMembers() {
+		return members;
+	}
+
+	public void setMembers(HashMap<String, Friend> members) {
+		this.members = members;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+
 	
 }

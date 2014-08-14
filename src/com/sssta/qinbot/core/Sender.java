@@ -16,11 +16,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 import com.sssta.qinbot.model.Group;
 import com.sssta.qinbot.model.Message;
 import com.sssta.qinbot.util.HttpHelper;
+import com.sun.media.jai.opimage.AddCollectionCRIF;
 
 public class Sender extends Thread {
 	private boolean pause = false;
 	private MessageExecutor messageExecutor;
-	private LinkedBlockingQueue<Message> messageQueue;
+	private static LinkedBlockingQueue<Message> messageQueue;
 	public Sender(MessageExecutor messageExecutor) {
 		super();
 		this.messageExecutor = messageExecutor;
@@ -39,6 +40,12 @@ public class Sender extends Thread {
 			if (!pause) {
 				if (!messageQueue.isEmpty()) {
 					messageQueue.poll().send();
+				}else {
+					try {
+						sleep(200);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -47,21 +54,11 @@ public class Sender extends Thread {
 	public void send(){
 		if (Bot.getInstance().getGroups().size()>0) {
 			
-			HashMap<String, String> properties = new HashMap<String, String>();
-			properties.put(PROPERTY_ACCEPT, "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-			properties.put(PROPERTY_REFER, URL_REFER_POLL);
-			properties.put(PROPERTY_ACCEPT,"*/*");
-			properties.put(PROPERTY_ACCEPT_ENCODING, "gzip,deflate,sdch");
-			properties.put(PROPERTY_CONTETN_TYPE, "application/x-www-form-urlencoded");
-			properties.put(PROPERTY_CONNECTION,"keep-alive");
-			properties.put(PROPERTY_ACCEPT_LANGUAGE, "zh-CN,zh;q=0.8");
-			properties.put(PROPERTY_HOST, "d.web2.qq.com");
-			properties.put(PROPERTY_ORIGIN, "http://d.web2.qq.com");
+		
 			Group group = Bot.getInstance().getGroups().entrySet().iterator().next().getValue();
-			System.out.println("uin-"+group.getUin());
-			System.out.println("code-"+group.getCode());
-			String resultJson = HttpHelper.sendPost(HttpHelper.URL_SEND_GROUP,Bot.getInstance().getSendGrouopReqData((group.getUin())),properties);
-			System.out.println("send--"+resultJson);
+			//System.out.println("uin-"+group.getUin());
+			//System.out.println("code-"+group.getCode());
+			
 		}
 		
 
@@ -73,6 +70,10 @@ public class Sender extends Thread {
 
 	public void setPause(boolean pause) {
 		this.pause = pause;
+	}
+	
+	public static void queue(Message message){
+		messageQueue.add(message);
 	}
 	
 }
