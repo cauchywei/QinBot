@@ -38,31 +38,17 @@ public class Sender extends Thread {
 	public void run() {
 		while (true) {
 			if (!pause) {
-				if (!messageQueue.isEmpty()) {
-					messageQueue.poll().send();
-				}else {
-					try {
-						sleep(200);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+				try {
+					Message message = messageQueue.take();
+					message.send();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
 	}
-	
-	public void send(){
-		if (Bot.getInstance().getGroups().size()>0) {
-			
 		
-			Group group = Bot.getInstance().getGroups().entrySet().iterator().next().getValue();
-			//System.out.println("uin-"+group.getUin());
-			//System.out.println("code-"+group.getCode());
-			
-		}
-		
-
-	}
 	
 	public boolean isPause() {
 		return pause;

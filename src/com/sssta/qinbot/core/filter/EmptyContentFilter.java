@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.sssta.qinbot.model.Message;
 
-public class EmptyContentFilter implements IMessageFilter {
+public class EmptyContentFilter extends MessageFilterBase {
 
 	@Override
 	public boolean filte(Message message) {
@@ -16,15 +16,6 @@ public class EmptyContentFilter implements IMessageFilter {
 		}
 	}
 
-	@Override
-	public void filte(List<Message> messages) {
-		Iterator<Message> iterator = messages.iterator();
-		while (iterator.hasNext()) {
-			Message message = iterator.next();
-			if (filte(message)) {
-				messages.remove(message);
-			}
-		}
-	}
+	
 
 }

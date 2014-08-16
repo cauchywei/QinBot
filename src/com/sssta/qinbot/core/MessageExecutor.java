@@ -9,12 +9,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import com.sssta.qinbot.core.filter.BlackNameListFilter;
 import com.sssta.qinbot.core.filter.EmptyContentFilter;
-import com.sssta.qinbot.core.filter.IMessageFilter;
+import com.sssta.qinbot.core.filter.MessageFilterBase;
 import com.sssta.qinbot.model.Message;
 import com.sun.org.apache.xalan.internal.xsltc.dom.EmptyFilter;
 
 public class MessageExecutor implements IMessageExecutor {
-	private LinkedList<IMessageFilter> filters = new LinkedList<IMessageFilter>();
+	private LinkedList<MessageFilterBase> filters = new LinkedList<MessageFilterBase>();
 	private Poller poller;
 	private Sender sender;
 	private Bot bot;
@@ -25,7 +25,8 @@ public class MessageExecutor implements IMessageExecutor {
 	public MessageExecutor(Bot bot) {
 		this.bot = bot;
 		poller = new Poller(this);
-		 sender = new Sender(this);
+		sender = new Sender(this);
+		
 	}
 
 	@Override
@@ -84,10 +85,6 @@ public class MessageExecutor implements IMessageExecutor {
 		this.sendMessageQueue = sendMessageQueue;
 	}
 	
-	@Override
-	public void loadPlugins() {
-		
-	}
 	
 	@Override
 	public void loadFilters(){
@@ -98,7 +95,7 @@ public class MessageExecutor implements IMessageExecutor {
 	@Override
 	public void exec(List<Message> messages) {
 		
-		for (IMessageFilter filter :filters) {
+		for (MessageFilterBase filter :filters) {
 				filter.filte(messages);
 		}
 		
@@ -106,13 +103,13 @@ public class MessageExecutor implements IMessageExecutor {
 	}
 
 	@Override
-	public void addFilter(IMessageFilter filter) {
+	public void addFilter(MessageFilterBase filter) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public IMessageFilter removeFilter(IMessageFilter filter) {
+	public MessageFilterBase removeFilter(MessageFilterBase filter) {
 		// TODO Auto-generated method stub
 		return null;
 	}
