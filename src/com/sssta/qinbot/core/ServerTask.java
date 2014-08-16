@@ -37,7 +37,6 @@ public class ServerTask extends Thread {
 				try {
 					onMessage(messageQueue.take());
 				} catch (InterruptedException e) {
-					//e.printStackTrace();
 					Log.i(Thread.currentThread()+" has beed interupted");
 				}
 				lastActiveTime = System.currentTimeMillis();
