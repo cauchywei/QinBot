@@ -9,6 +9,8 @@ public class PluginThreadLocal extends ThreadLocal<List<PluginBase>> {
 	@Override
 	protected List<PluginBase> initialValue() {
 		List<PluginBase> plugins = new LinkedList<PluginBase>();
+		
+		plugins.add(new HelpPlugin(plugins));
 		plugins.add(new TestPlugin());
 		plugins.add(new GreetingPlugin());
 

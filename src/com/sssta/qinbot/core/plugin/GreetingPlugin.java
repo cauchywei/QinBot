@@ -8,16 +8,17 @@ import com.sssta.qinbot.model.Message;
 public class GreetingPlugin extends PluginBase{
 	
 	static String[] moringWords = new String[]{"早上好","moring","起床失败","早安","起床"};
-	static String[] nigthWords = new String[]{"古耐","晚安","睡觉","强者早睡"};
+	static String[] nigthWords = new String[]{"古耐","晚安","睡觉","强者早睡","晚上好"};
 	
 	static String[] moringResponseWord = new String[]{"早上好","good moring","起床失败2333","早安","起床咯"};
-	static String[] nigthResponseWords = new String[]{"古耐~","晚安~","做个好梦~","强者早睡！！！","春梦了无痕~"};
+	static String[] nigthResponseWords = new String[]{"古耐~","晚安~","做个好梦~","强者早睡！！！","春梦了无痕~","睡个好觉~"};
 	
 	public GreetingPlugin(){
-		name = "问候";
+		name = "greeting";
 		version = "0.1";
 		author = "Cauchywei";
 		descrition = "打造一个有礼貌的QinBot";
+		help = "在早上11点前发送包含早安等关键字的信息或者在晚上21点之后发送包含晚安等关键字的信息，Bot会随机回复问候语句";
 	}
 
 	@Override

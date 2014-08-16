@@ -5,11 +5,12 @@ import com.sssta.qinbot.util.Log;
 import com.sun.tools.javac.resources.version;
 
 public class PluginBase implements IPlugin{
-	protected String name;
-	protected String author;
-	protected String descrition;
-	protected String version;
-	protected boolean isEnable = true;
+	String name;
+	String author;
+	String descrition;
+	String version;
+	String help="暂无";
+	boolean isEnable = true;
 	@Override
 	public void onLoad() {
 		Log.i("LoadPligin--"+name);
