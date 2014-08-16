@@ -2,11 +2,14 @@ package com.sssta.qinbot.core.plugin;
 
 import com.sssta.qinbot.model.Message;
 import com.sssta.qinbot.util.Log;
+import com.sun.tools.javac.resources.version;
 
 public class PluginBase implements IPlugin{
 	protected String name;
 	protected String author;
 	protected String descrition;
+	protected String version;
+	protected boolean isEnable = true;
 	@Override
 	public void onLoad() {
 		Log.i("LoadPligin--"+name);

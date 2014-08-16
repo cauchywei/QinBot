@@ -16,6 +16,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import com.sssta.qinbot.model.Group;
 import com.sssta.qinbot.model.Message;
 import com.sssta.qinbot.util.HttpHelper;
+import com.sssta.qinbot.util.Log;
 import com.sun.media.jai.opimage.AddCollectionCRIF;
 
 public class Sender extends Thread {
@@ -39,11 +40,15 @@ public class Sender extends Thread {
 		while (true) {
 			if (!pause) {
 				try {
+					Log.i("wait to send...");
 					Message message = messageQueue.take();
 					message.send();
+					Log.i("message sended...");
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}catch (Exception e) {
+					// TODO: handle exception
 				}
 			}
 		}

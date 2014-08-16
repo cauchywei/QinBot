@@ -67,7 +67,10 @@ public class ResponseParser {
 			if (retcode == 0) {
 				JSONArray messageArray = base.optJSONArray("result");
 				for (int i = 0; i < messageArray.length(); i++) {
-					messages.add(Message.newEntity(messageArray.optJSONObject(i)));
+					Message message = Message.newEntity(messageArray.optJSONObject(i));
+					if (message!=null) {
+						messages.add(message);
+					}
 				}
 			}else if (retcode == 100) {
             	//TODO
