@@ -33,10 +33,8 @@ public class Poller extends Thread {
 				try {
 					poll();
 					sleep(500);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
 				} catch (Exception e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			}
 		}

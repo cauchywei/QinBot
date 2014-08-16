@@ -10,6 +10,8 @@ public class PluginThreadLocal extends ThreadLocal<List<PluginBase>> {
 	protected List<PluginBase> initialValue() {
 		List<PluginBase> plugins = new LinkedList<PluginBase>();
 		plugins.add(new TestPlugin());
+		plugins.add(new GreetingPlugin());
+
 		return plugins;
 	}
 	

@@ -10,7 +10,7 @@ import com.sssta.qinbot.model.Message;
 import com.sssta.qinbot.model.NormalMessage;
 import com.sssta.qinbot.util.Log;
 
-public class ServerTaskManager {
+public class ServerTaskManager extends Thread {
 	public static final int MAX_NUM = 15;
 	public static long CLEAR_PERIOD = 30000l;
 	public static long MAX_TASK_FREE_TIME = 60000;
@@ -19,11 +19,9 @@ public class ServerTaskManager {
 	private LinkedList<GroupServerTask> freeGroupServerTasks = new LinkedList<GroupServerTask>();
 	private LinkedList<FriendServerTask> freeFriendServerTasks = new LinkedList<FriendServerTask>();
 	private static ServerTaskManager manager = new ServerTaskManager();
-	private TaskClearer taskClearer;
 	
 	private ServerTaskManager(){
-		taskClearer = new TaskClearer();
-		taskClearer.start();
+		start();
 	}
 	
 	public static synchronized ServerTaskManager getInstance(){
@@ -97,44 +95,41 @@ public class ServerTaskManager {
 		}
 	}
 	
-	class TaskClearer extends Thread{
-		private boolean pause;
-		@Override
-		public void run() {
-			while (true) {
-				if (!pause) {
-					Log.i("TaskClearing!!!");
+	private boolean pause;
+	@Override
+	public void run() {
+		while (true) {
+			if (!pause) {
+				Log.i("TaskClearing!!!");
 
-					try {
-						Set<String> keys = runningTasks.keySet();
-						Iterator<String> iterator = keys.iterator();
-						while (iterator.hasNext()) {
-							String key = iterator.next();
-							ServerTask task = runningTasks.get(key);
-							if (System.currentTimeMillis() - task.getLastActiveTime() > MAX_TASK_FREE_TIME) {
-								task.wait();
-								runningTasks.remove(key);
-								if (task instanceof FriendServerTask) {
-									freeGroupServerTasks.add((GroupServerTask) task);
-								}else if(task instanceof GroupServerTask){
-									freeFriendServerTasks.add((FriendServerTask) task);
-								}
-								Log.i("TaskClearing!!!--clear "+task.getServeUni());
+				try {
+					Set<String> keys = runningTasks.keySet();
+					Iterator<String> iterator = keys.iterator();
+					while (iterator.hasNext()) {
+						String key = iterator.next();
+						ServerTask task = runningTasks.get(key);
+						if (System.currentTimeMillis() - task.getLastActiveTime() > MAX_TASK_FREE_TIME) {
+							task.wait();
+							runningTasks.remove(key);
+							if (task instanceof FriendServerTask) {
+								freeGroupServerTasks.add((GroupServerTask) task);
+							}else if(task instanceof GroupServerTask){
+								freeFriendServerTasks.add((FriendServerTask) task);
 							}
-							
+							Log.i("TaskClearing!!!--clear "+task.getServeUni());
 						}
 						
-						sleep(CLEAR_PERIOD);
-					} catch (InterruptedException e) {
-						Log.e(e.getMessage());
 					}
+					
+					sleep(CLEAR_PERIOD);
+				} catch (InterruptedException e) {
+					Log.e(e.getMessage());
 				}
-				
 			}
+			
 		}
-		
 	}
 	
-	
+
 	
 }
