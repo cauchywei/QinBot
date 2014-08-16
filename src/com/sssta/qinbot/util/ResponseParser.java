@@ -132,7 +132,7 @@ public class ResponseParser {
 				JSONArray groupArray = base.optJSONObject("result").optJSONArray("gnamelist");
 				for (int i = 0; i < groupArray.length(); i++) {
 					Group group = new Group(groupArray.optJSONObject(i));
-					groups.put(group.getName(),group);
+					groups.put(group.getUin(),group);
 				}
 			}
 		} catch (JSONException e) {

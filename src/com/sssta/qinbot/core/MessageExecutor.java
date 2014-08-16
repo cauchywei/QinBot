@@ -99,6 +99,10 @@ public class MessageExecutor implements IMessageExecutor {
 				filter.filte(messages);
 		}
 		
+		//TODO
+		for (Message message:messages) {
+			ServerTaskManager.getInstance().dispatch(message);
+		}
 		
 	}
 

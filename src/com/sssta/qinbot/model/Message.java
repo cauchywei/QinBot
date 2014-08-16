@@ -53,8 +53,9 @@ public abstract class Message {
 	public Message(JSONObject message){
 		JSONArray contents = message.optJSONArray(CONTENT);
 		for (int i = 0; i < contents.length(); i++) {
-			if (contents.get(i) instanceof String) {
-				content =(String)contents.get(i);
+			String content = contents.optString(i);
+			if (content!=null) {
+				this.content =content;
 			}else{
 				//TODO 表情以及图片的解析
 			}
@@ -71,13 +72,11 @@ public abstract class Message {
 	public static Message newEntity(JSONObject message){
 		String type = message.optString(POLL_TYPE);
 		if (type.equals(TYPE_NORMAL)) {
-			return new NormalMessage(message);
+			return new NormalMessage(message.optJSONObject("value"));
 		}else if (type.equals(TYPE_GROUP)) {
-			return new GroupMessage(message);
-		}else {
-			return new NormalMessage();
+			return new GroupMessage(message.optJSONObject("value"));
 		}
-		
+		return null;
 	}
 
 	

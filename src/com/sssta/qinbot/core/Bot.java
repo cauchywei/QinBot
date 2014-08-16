@@ -143,7 +143,7 @@ public class Bot {
 			return true;
 		}
 		String uin = getQqHex();
-		String vcode = vCode.equals("") ? getVcReqCode() : vCode;
+		String vcode = vCode!=null &&vCode.equals("") ? getVcReqCode() : vCode;
 		
 		//发起第一次登陆请求
 		

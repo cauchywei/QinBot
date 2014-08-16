@@ -9,7 +9,7 @@ public class PluginThreadLocal extends ThreadLocal<List<PluginBase>> {
 	@Override
 	protected List<PluginBase> initialValue() {
 		List<PluginBase> plugins = new LinkedList<PluginBase>();
-		//TODO 添加新插件
+		plugins.add(new TestPlugin());
 		return plugins;
 	}
 	

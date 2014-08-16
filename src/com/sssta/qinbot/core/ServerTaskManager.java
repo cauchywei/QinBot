@@ -19,9 +19,11 @@ public class ServerTaskManager {
 	private LinkedList<GroupServerTask> freeGroupServerTasks = new LinkedList<GroupServerTask>();
 	private LinkedList<FriendServerTask> freeFriendServerTasks = new LinkedList<FriendServerTask>();
 	private static ServerTaskManager manager = new ServerTaskManager();
+	private TaskClearer taskClearer;
 	
 	private ServerTaskManager(){
-		
+		taskClearer = new TaskClearer();
+		taskClearer.start();
 	}
 	
 	public static synchronized ServerTaskManager getInstance(){
@@ -29,10 +31,13 @@ public class ServerTaskManager {
 	}
 	
 	public void dispatch(Message message){
+		Log.i("dispatch---"+message.content);
 		try{
 			if (message instanceof GroupMessage) {
+				Log.i("dispatch group---");
 				dispatchGroupMessage((GroupMessage) message);
 			}else if (message instanceof NormalMessage) {
+				Log.i("dispatch friend---");
 				dispatchFriendMessage((NormalMessage) message);
 			}
 		}catch(InterruptedException e){
@@ -79,7 +84,7 @@ public class ServerTaskManager {
 				message.reply("小Qin正忙着，稍等:-D！");
 			}else {
 				FriendServerTask task = new FriendServerTask();
-				task.reset(message.getFrom());
+				task.setServeUni(message.getFrom());
 				task.getMessageQueue().put(message);
 				task.start();
 				runningTasks.put(message.from, task);	
@@ -98,6 +103,8 @@ public class ServerTaskManager {
 		public void run() {
 			while (true) {
 				if (!pause) {
+					Log.i("TaskClearing!!!");
+
 					try {
 						Set<String> keys = runningTasks.keySet();
 						Iterator<String> iterator = keys.iterator();
@@ -112,8 +119,11 @@ public class ServerTaskManager {
 								}else if(task instanceof GroupServerTask){
 									freeFriendServerTasks.add((FriendServerTask) task);
 								}
+								Log.i("TaskClearing!!!--clear "+task.getServeUni());
 							}
+							
 						}
+						
 						sleep(CLEAR_PERIOD);
 					} catch (InterruptedException e) {
 						Log.e(e.getMessage());

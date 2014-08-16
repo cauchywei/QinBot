@@ -4,9 +4,9 @@ import com.sssta.qinbot.model.Message;
 import com.sssta.qinbot.util.Log;
 
 public class PluginBase implements IPlugin{
-	private String name;
-	private String author;
-	private String descrition;
+	protected String name;
+	protected String author;
+	protected String descrition;
 	@Override
 	public void onLoad() {
 		Log.i("LoadPligin--"+name);

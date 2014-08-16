@@ -9,6 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import com.sssta.qinbot.model.Message;
 import com.sssta.qinbot.util.HttpHelper;
 import com.sssta.qinbot.util.ResponseParser;
+import com.sun.tools.javac.util.List;
 
 public class Poller extends Thread {
 	private boolean pause = false;

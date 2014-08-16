@@ -14,6 +14,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 
 import com.sssta.qinbot.core.Bot;
+import com.sssta.qinbot.core.Sender;
 import com.sssta.qinbot.util.HttpHelper;
 
 import atg.taglib.json.util.JSONObject;
@@ -49,7 +50,10 @@ public class NormalMessage extends Message {
 
 	@Override
 	public void reply(String msg) {
-		
+		if (replyMsg== null || replyMsg.trim().equals("")) {
+			replyMsg = msg;
+			Sender.queue(this);
+		}
 	}
 
 	@Override
