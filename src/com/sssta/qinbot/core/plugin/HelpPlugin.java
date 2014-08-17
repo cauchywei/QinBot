@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.sssta.qinbot.model.Message;
+import com.sssta.qinbot.util.Log;
 
 public class HelpPlugin extends AtNamePluginBase {
 	

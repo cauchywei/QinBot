@@ -64,7 +64,7 @@ public abstract class Message {
 		for (int i = 0; i < contents.length(); i++) {
 			String content = contents.optString(i);
 			if (content!=null) {
-				this.content =content;
+				setContent(content);
 			}else{
 				//TODO 表情以及图片的解析
 			}
