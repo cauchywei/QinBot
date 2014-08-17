@@ -49,6 +49,7 @@ public class ServerTaskManager{
 		
 		ServerTask serverTask = runningTasks.get(message.getFrom());
 		if (serverTask!=null && serverTask instanceof GroupServerTask) {
+			Log.i("Put to running Thread");
 			serverTask.getMessageQueue().put(message);
 			return;
 		}
@@ -68,6 +69,7 @@ public class ServerTaskManager{
 			Log.i("Reuse");
 			GroupServerTask task =  freeGroupServerTasks.remove();
 			task.reset(message.getFrom());
+			task.getMessageQueue().add(message);
 			task.notify();
 			runningTasks.put(message.getFrom(), task);
 		}
@@ -76,6 +78,7 @@ public class ServerTaskManager{
 	public void dispatchFriendMessage(NormalMessage message) throws InterruptedException{
 		ServerTask serverTask = runningTasks.get(message.getFrom());
 		if (serverTask!=null && serverTask instanceof FriendServerTask) {
+			Log.i("Put to running Thread");
 			serverTask.getMessageQueue().put(message);
 			return;
 		}
@@ -94,12 +97,23 @@ public class ServerTaskManager{
 		}else {
 			Log.i("Reuse");
 			FriendServerTask task =  freeFriendServerTasks.remove();
-			task.setServeUni(message.getFrom());
+			task.getMessageQueue().add(message);
+			task.reset(message.getFrom());
+			task.getMessageQueue().add(message);
 			task.notify();
 			runningTasks.put(message.getFrom(), task);
 		}
 	}
 	
+	
+	
+	public HashMap<String, ServerTask> getRunningTasks() {
+		return runningTasks;
+	}
+
+	
+
+
 	class TaskClearer extends Thread{
 		private boolean pause;
 		@Override
@@ -117,9 +131,9 @@ public class ServerTaskManager{
 							if (System.currentTimeMillis() - task.getLastActiveTime() > MAX_TASK_FREE_TIME) {
 								runningTasks.remove(key);
 								if (task instanceof FriendServerTask) {
-									freeGroupServerTasks.add((GroupServerTask) task);
-								}else if(task instanceof GroupServerTask){
 									freeFriendServerTasks.add((FriendServerTask) task);
+								}else if(task instanceof GroupServerTask){
+									freeGroupServerTasks.add((GroupServerTask) task);
 								}
 								Log.i("TaskClearing!!!--clear "+task.getServeUni());
 							}
@@ -128,7 +142,9 @@ public class ServerTaskManager{
 						
 						sleep(CLEAR_PERIOD);
 					} catch (InterruptedException e) {
-						Log.e(e.getMessage());
+						//Log.e(e.getMessage());
+					} catch (Exception e) {
+						// TODO: handle exception
 					}
 				}
 				

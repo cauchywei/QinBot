@@ -45,11 +45,11 @@ public class ServerTask extends Thread {
 	}
 	
 	public void onMessage(Message message){
-		Log.i("onMessage！！！--"+message.content);
-
 		for (PluginBase plugin :plugins) {
-			if (plugin.onMessage(message)) {
-				return;
+			if (specialCondiction(plugin)) {
+				if (plugin.onMessage(message)) {
+					return;
+				}
 			}
 		}
 	}
@@ -86,7 +86,9 @@ public class ServerTask extends Thread {
 		this.lastActiveTime = lastActiveTime;
 	}
 	
-	
+	public boolean specialCondiction(PluginBase plugin){
+		return true;
+	}
 	
 	
 }

@@ -5,24 +5,34 @@ import com.sssta.qinbot.util.Log;
 import com.sun.tools.javac.resources.version;
 
 public class PluginBase implements IPlugin{
-	String name;
-	String author;
-	String descrition;
-	String version;
-	String help="暂无";
+	public String name;
+	public String author;
+	public String descrition;
+	public String version;
+	public String help="暂无";
+	public boolean groupAcceptedEnable = true;
+	public boolean friendAcceptedEnable = true;
 	boolean isEnable = true;
 	@Override
-	public void onLoad() {
+	public void load() {
 		Log.i("LoadPligin--"+name);
 	}
 
 	@Override
-	public void unload() {
+	public void unLoad() {
 		Log.i("UnLoadPligin--"+name);
 	}
 
+	/**
+	 * 返回true代表拦截此消息
+	 */
 	@Override
 	public boolean onMessage(Message message) {
+		// TODO Auto-generated method stub
+		return onResponse(message);
+	}
+	
+	public boolean onResponse(Message message) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -31,4 +41,6 @@ public class PluginBase implements IPlugin{
 	public String toString() {
 		return String.format("Plugin:{\n\tname:\n\t\t%s\n\tauthor:\n\t\t%s\n\tdescrition:\n\t\t%s\n}", name,author,descrition);
 	}
+
+	
 }

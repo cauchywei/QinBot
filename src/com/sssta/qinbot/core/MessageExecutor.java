@@ -18,7 +18,6 @@ public class MessageExecutor implements IMessageExecutor {
 	private Poller poller;
 	private Sender sender;
 	private Bot bot;
-	ExecutorService executor = Executors.newCachedThreadPool();
 	private LinkedBlockingQueue<Message> sendMessageQueue = new LinkedBlockingQueue<Message>();
 	private int messageID = 23333;
 
@@ -69,13 +68,6 @@ public class MessageExecutor implements IMessageExecutor {
 		this.sender = sender;
 	}
 
-	public Executor getExecutor() {
-		return executor;
-	}
-
-	public void setExecutor(ExecutorService executor) {
-		this.executor = executor;
-	}
 
 	public LinkedBlockingQueue<Message> getSendMessageQueue() {
 		return sendMessageQueue;

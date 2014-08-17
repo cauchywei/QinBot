@@ -15,31 +15,31 @@ public class GreetingPlugin extends PluginBase{
 	
 	public GreetingPlugin(){
 		name = "greeting";
-		version = "0.1";
+		version = "0.2";
 		author = "Cauchywei";
 		descrition = "打造一个有礼貌的QinBot";
-		help = "在早上11点前发送包含早安等关键字的信息或者在晚上21点之后发送包含晚安等关键字的信息，Bot会随机回复问候语句";
+		help = "在早上10点前发送包含早安等关键字的信息或者在晚上21点之后发送包含晚安等关键字的信息，Bot会随机回复问候语句";
 	}
 
 	@Override
-	public boolean onMessage(Message message) {
-		for (String word :moringWords) {
-			if (message.content.contains(word)) {
-				if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) <= 10) {
-					message.reply(moringResponseWord[new Random().nextInt(moringResponseWord.length)]);
-					return true;
+	public boolean onResponse(Message message) {
+		int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+		if (hour <= 9) {
+			for (String word :moringWords) {
+				if (message.content.contains(word)) {
+						message.reply(moringResponseWord[new Random().nextInt(moringResponseWord.length)]);
+						return true;
+				}
+			}
+		}else if (hour >= 21|| hour < 3) {
+			for (String word :nigthWords) {
+				if (message.content.contains(word)) {
+						message.reply(nigthResponseWords[new Random().nextInt(nigthResponseWords.length)]);
+						return true;
 				}
 			}
 		}
-		for (String word :nigthWords) {
-			if (message.content.contains(word)) {
-				if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 21) {
-					message.reply(nigthResponseWords[new Random().nextInt(nigthResponseWords.length)]);
-					return true;
-				}
-			}
-		}
-		
+
 		return false;
 	}
 	

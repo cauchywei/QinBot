@@ -451,7 +451,11 @@ public class Bot {
 	public HashMap<String,DiscussGroup> getDiscussGroups() {
 		return this.discussGroups;
 	}
-	
-	
-	
+
+
+	public MessageExecutor getMessageManager() {
+		return messageManager;
+	}
+
+
 }

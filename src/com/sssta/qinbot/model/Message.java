@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.sssta.qinbot.core.Bot;
+import com.sssta.qinbot.core.MessageExecutor;
+import com.sssta.qinbot.core.ServerTaskManager;
 import com.sssta.qinbot.exception.MessageErrorException;
 
 import atg.taglib.json.util.JSONArray;
@@ -12,11 +15,16 @@ import atg.taglib.json.util.JSONObject;
 
 public abstract class Message {
 	
+	public static final String TYPE_GROUP = "group_message";
+	public static final String TYPE_NORMAL = "message";
+	public static final String TYPE_INPUT_NOTIFY = "input_notify";
+
+	public static final String TYPE_BUDDIES_STATUS_CHANGE = "buddies_status_change";
+	
 	private static final String POLL_TYPE = "poll_type";
 	private static final String RETURN_CODE = "retcode";
 	private static final String RESULT = "result";
-	public static final String TYPE_GROUP = "group_message";
-	public static final String TYPE_NORMAL = "message";
+
 	private static final String CONTENT = "content";
 	private static final String TIME = "time";
 	private static final String FROM = "from_uin";
@@ -35,6 +43,7 @@ public abstract class Message {
 	public int msgType;
 	public String replyIp;
 	private static int MESSAGE_ID = 2333;
+	protected boolean isAtName = false;
 	
 	protected int getMessageId(){
 		return ++MESSAGE_ID;
@@ -67,6 +76,8 @@ public abstract class Message {
 		msgId2 = message.optString(MSG_ID2);
 		msgType = message.optInt(MSG_TYPE);
 		replyIp = message.optString(REPLY_IP);
+		
+		
 	}
 	
 	public static Message newEntity(JSONObject message){
@@ -75,6 +86,18 @@ public abstract class Message {
 			return new NormalMessage(message.optJSONObject("value"));
 		}else if (type.equals(TYPE_GROUP)) {
 			return new GroupMessage(message.optJSONObject("value"));
+		}else if(type.equals(TYPE_INPUT_NOTIFY)){
+			Message msg = new NormalMessage();
+			msg.setFrom(message.optJSONObject("value").optString(FROM));
+			msg.setContent("");
+			if (ServerTaskManager.getInstance().getRunningTasks().get(msg.getFrom())==null) {
+				msg.reply("喵~~😊😊😊");
+			}
+			return msg;
+		}else if (type.equals(TYPE_BUDDIES_STATUS_CHANGE)) {
+//			Message msg = new NormalMessage();
+//			JSONObject messageJsonObject = message.optJSONObject("value");
+//			msg.setFrom(messageJsonObject.optString("uin"));
 		}
 		return null;
 	}
@@ -113,6 +136,11 @@ public abstract class Message {
 
 	public void setContent(String content) {
 		this.content = content;
+		if (content.toLowerCase().startsWith("@qinbot")||content.startsWith("@亲妹子")) {
+			isAtName = true;
+		}else{
+			isAtName = false;
+		}
 	}
 
 
@@ -192,10 +220,12 @@ public abstract class Message {
 	public void setReplyMsg(String replyMsg) {
 		this.replyMsg = replyMsg;
 	}
-	
-	
-	
-	
+	public boolean isAtName() {
+		return isAtName;
+	}
+	public void setAtName(boolean isAtName) {
+		this.isAtName = isAtName;
+	}
 	
 	/*信息格式
 	 
