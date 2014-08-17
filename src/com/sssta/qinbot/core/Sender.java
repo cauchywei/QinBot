@@ -43,7 +43,8 @@ public class Sender extends Thread {
 					Log.i("wait to send...");
 					Message message = messageQueue.take();
 					message.send();
-					Log.i("message sended...");
+					
+					Log.i("message:"+message.content+" sended...during "+(System.currentTimeMillis()-message.startRecieveTime)/1000f);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

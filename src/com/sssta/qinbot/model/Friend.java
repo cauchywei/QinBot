@@ -75,6 +75,9 @@ public class Friend {
 		this.qq = qq;
 	}
 	public String getCard() {
+		if (card==null) {
+			return nickName;
+		}
 		return card;
 	}
 	public void setCard(String card) {

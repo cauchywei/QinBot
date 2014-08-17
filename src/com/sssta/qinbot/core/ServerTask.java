@@ -18,7 +18,7 @@ public class ServerTask extends Thread {
 	
 	public  void reset(String serveUni){
 		this.serveUni = serveUni;
-		messageQueue.clear();
+	//	messageQueue.clear();
 		lastActiveTime = System.currentTimeMillis();
 		notify();
 	}
@@ -35,6 +35,7 @@ public class ServerTask extends Thread {
 		while (true) {
 			if (!pause) {
 				try {
+					
 					onMessage(messageQueue.take());
 				} catch (InterruptedException e) {
 					Log.i(Thread.currentThread()+" has beed interupted");

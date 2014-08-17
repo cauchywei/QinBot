@@ -45,6 +45,8 @@ public abstract class Message {
 	private static int MESSAGE_ID = 2333;
 	protected boolean isAtName = false;
 	
+	public long startRecieveTime = System.currentTimeMillis();
+	
 	protected int getMessageId(){
 		return ++MESSAGE_ID;
 	}

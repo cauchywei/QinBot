@@ -16,6 +16,7 @@ public class PluginThreadLocal extends ThreadLocal<List<PluginBase>> {
 		
 		plugins.add(new TestPlugin());
 		plugins.add(new GreetingPlugin());
+		plugins.add(new MengPlugin());
 
 		return plugins;
 	}

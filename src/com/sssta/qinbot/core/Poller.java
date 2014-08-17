@@ -16,6 +16,21 @@ public class Poller extends Thread {
 	private Bot bot;
 	private MessageExecutor messageExecutor;
 	private LinkedBlockingQueue<Message> messageQueue;
+	static HashMap<String, String> properties = new HashMap<String, String>();
+	static{
+		properties.put(PROPERTY_ACCEPT, "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+		properties.put(PROPERTY_REFER, URL_REFER_POLL);
+		properties.put(PROPERTY_ACCEPT,"*/*");
+		properties.put(PROPERTY_ACCEPT_ENCODING, "gzip,deflate,sdch");
+		properties.put(PROPERTY_CONTETN_TYPE, "application/x-www-form-urlencoded");
+		properties.put(PROPERTY_CONNECTION,"keep-alive");
+		properties.put(PROPERTY_ACCEPT_LANGUAGE, "zh-CN,zh;q=0.8");
+		properties.put(PROPERTY_HOST, "d.web2.qq.com");
+		properties.put(PROPERTY_ORIGIN, "http://d.web2.qq.com");
+	}
+	
+	
+	
 	public Poller(MessageExecutor messageExecutor) {
 		this.messageExecutor = messageExecutor;
 		this.messageQueue = messageExecutor.getSendMessageQueue();
@@ -42,16 +57,7 @@ public class Poller extends Thread {
 	
 	public void  poll() throws IOException{
 		
-		HashMap<String, String> properties = new HashMap<String, String>();
-		properties.put(PROPERTY_ACCEPT, "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-		properties.put(PROPERTY_REFER, URL_REFER_POLL);
-		properties.put(PROPERTY_ACCEPT,"*/*");
-		properties.put(PROPERTY_ACCEPT_ENCODING, "gzip,deflate,sdch");
-		properties.put(PROPERTY_CONTETN_TYPE, "application/x-www-form-urlencoded");
-		properties.put(PROPERTY_CONNECTION,"keep-alive");
-		properties.put(PROPERTY_ACCEPT_LANGUAGE, "zh-CN,zh;q=0.8");
-		properties.put(PROPERTY_HOST, "d.web2.qq.com");
-		properties.put(PROPERTY_ORIGIN, "http://d.web2.qq.com");
+		
 		
 		String resultString = HttpHelper.sendPost(URL_POLL,Bot.getInstance().getPollReqData(),properties);
 		System.out.println("poll--"+resultString);

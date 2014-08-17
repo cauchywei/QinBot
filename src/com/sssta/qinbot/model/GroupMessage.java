@@ -84,5 +84,13 @@ public class GroupMessage extends Message {
 		String resultJson = HttpHelper.sendPost(HttpHelper.URL_SEND_GROUP,generateReplyJson(),properties);
 		System.out.println("send to group:"+Bot.getInstance().getGroups().get(from).getName()+"--"+resultJson);
 	}
+
+	public String getSendUin() {
+		return sendUin;
+	}
+
+	public void setSendUin(String sendUin) {
+		this.sendUin = sendUin;
+	}
 	
 }

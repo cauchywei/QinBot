@@ -7,11 +7,11 @@ import com.sssta.qinbot.model.Message;
 
 public class GreetingPlugin extends PluginBase{
 	
-	static String[] moringWords = new String[]{"早上好","moring","起床失败","早安","起床"};
+	static String[] moringWords = new String[]{"早上好","moring","起床失败","早安","起床","ohayo"};
 	static String[] nigthWords = new String[]{"古耐","晚安","睡觉","强者早睡","晚上好"};
 	
 	static String[] moringResponseWord = new String[]{"早上好","good moring","起床失败2333","早安","起床咯"};
-	static String[] nigthResponseWords = new String[]{"古耐~","晚安~","做个好梦~","强者早睡！！！","春梦了无痕~","睡个好觉~"};
+	static String[] nigthResponseWords = new String[]{"么么哒~","古耐~","晚安~","做个好梦~","强者早睡！！！","春梦了无痕~","睡个好觉~"};
 	
 	public GreetingPlugin(){
 		name = "greeting";

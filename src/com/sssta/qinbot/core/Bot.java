@@ -139,12 +139,11 @@ public class Bot {
 
 	public boolean login(String vCode) {
 		
-		if (state == BotState.ONLINE) {
+		if (state == BotState.ONLINE||getVcReqCode()==null) {
 			return true;
 		}
 		String uin = getQqHex();
 		String vcode = vCode!=null &&vCode.equals("") ? getVcReqCode() : vCode;
-		
 		//发起第一次登陆请求
 		
 		//获取密码hash码
