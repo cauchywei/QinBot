@@ -27,7 +27,7 @@ public class HelpPlugin extends AtNamePluginBase {
 					StringBuilder sb = new StringBuilder();
 					sb.append("\\\\n输入@QinBot help 插件名称 获取具体帮助\\\\n当前插件如下:\\\\n");
 					for (int i = 1; i < plugins.size(); i++) {
-						sb.append(plugins.get(i).name).append(" ver:").append(version).append("\\\\n");
+						sb.append(plugins.get(i).name).append(" ver:").append(plugins.get(i).version).append("\\\\n");
 					}
 					message.reply(sb.toString());
 				}else {
