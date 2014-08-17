@@ -18,11 +18,11 @@ public class HelpPlugin extends PluginBase {
 	@Override
 	public boolean onMessage(Message message) {
 		String msg = message.content.toLowerCase();
-		Pattern pattern = Pattern.compile("^@qinbot +help(.*)");
+		Pattern pattern = Pattern.compile("^@((qinbot)|(亲妹子)) +help(.*)");
 		Matcher matcher = pattern.matcher(msg);
 		if (matcher.find()) {
 			//总帮助提示
-			if (matcher.group(1)==null||matcher.group(1).trim().equals("")) {
+			if (matcher.group(4)==null||matcher.group(4).trim().equals("")) {
 				StringBuilder sb = new StringBuilder();
 				sb.append("\\\\n输入@QinBot help 插件名称 获取具体帮助\\\\n当前插件如下:\\\\n");
 				for (int i = 1; i < plugins.size(); i++) {
@@ -41,7 +41,7 @@ public class HelpPlugin extends PluginBase {
 				if (help!=null) {
 					message.reply(help);
 				}else {
-					message.reply("未找到"+matcher.group(1));
+					message.reply("未找到"+matcher.group(4));
 				}
 			}
 			return true;
