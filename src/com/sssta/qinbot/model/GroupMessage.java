@@ -13,9 +13,6 @@ import static com.sssta.qinbot.util.HttpHelper.URL_REFER_POLL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
-import sun.tools.tree.BitAndExpression;
-import sun.tools.tree.ThisExpression;
-
 import com.sssta.qinbot.core.Bot;
 import com.sssta.qinbot.core.Sender;
 import com.sssta.qinbot.util.HttpHelper;

@@ -3,8 +3,6 @@ package com.sssta.qinbot.core.plugin;
 import java.util.LinkedList;
 import java.util.List;
 
-import sun.tools.java.Package;
-
 
 public class PluginThreadLocal extends ThreadLocal<List<PluginBase>> {
 
@@ -16,7 +14,7 @@ public class PluginThreadLocal extends ThreadLocal<List<PluginBase>> {
 		
 		plugins.add(new TestPlugin());
 		plugins.add(new GreetingPlugin());
-		plugins.add(new MengPlugin());
+		plugins.add(new MoePlugin());
 
 		return plugins;
 	}

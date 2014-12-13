@@ -82,6 +82,7 @@ public class MessageExecutor implements IMessageExecutor {
 	public void loadFilters(){
 		filters.add(new EmptyContentFilter());
 		filters.add(new BlackNameListFilter());
+
 	}
 
 	@Override

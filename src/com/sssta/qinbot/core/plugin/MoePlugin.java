@@ -9,15 +9,15 @@ import com.sssta.qinbot.model.Group;
 import com.sssta.qinbot.model.GroupMessage;
 import com.sssta.qinbot.model.Message;
 
-public class MengPlugin extends PluginBase {
+public class MoePlugin extends PluginBase {
 	Random random = new Random(System.currentTimeMillis());
 	String[] whats = new String[]{"What the F*ck？！","你在说什么...","不要装傻！！","我什么也不知道"};
-	String[] agree = new String[]{"对呀对呀~","就是这样喵~"};
+	String[] agree = new String[]{"对呀对呀~","就是这样喵~","大伟我爱你"};
 	String[] jiecao = new String[]{"么么哒","我要和你生猴子！！！"};
 	String[] prefixName = new String[]{"现充","富贵","强者","后宫"};
 	
-	public MengPlugin(){
-		name = "meng";
+	public MoePlugin(){
+		name = "moe";
 		version = "0.1";
 		author = "Cauchywei";
 		descrition = "卖萌新技能~";
